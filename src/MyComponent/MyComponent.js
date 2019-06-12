@@ -2,7 +2,7 @@ import React from "react";
 import Bomb from "./MySubComponent/SubParaBomb"
 import Button from "./MySubComponent/SubButton"
 
-const MyButton = (props) => {
+const MyComponent = (props) => {
   return(
     <div>
       <h2>Level: { props.stage } { props.name } </h2>
@@ -13,4 +13,4 @@ const MyButton = (props) => {
   )
 }
 
-export default MyButton
+export default MyComponent
