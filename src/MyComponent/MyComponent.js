@@ -1,6 +1,6 @@
 import React from "react";
-import Bomb from "./SubBomb/Bomb"
-import Button from "./SubBomb/Button"
+import Bomb from "./MySubComponent/SubParaBomb"
+import Button from "./MySubComponent/SubButton"
 
 const MyButton = (props) => {
   return(

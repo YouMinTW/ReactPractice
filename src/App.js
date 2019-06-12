@@ -1,25 +1,17 @@
 import React from 'react';
 import './App.css';
 
-import MyButton from './MyButton/MyButton';
+import MyButton from './MyComponent/MyComponent';
 
 class App extends React.Component {
+
   state = {
    counter : { count : 0, bomb : false },
-
-  //  目前state中的method都還沒辦法用，還在思考怎麼透過state來pass method reference
-   stage:[
-     { level:1 , mission: this.incrementHandler , name: "去吧" },
-     { level:2 , mission: this.decrementHandler , name : "回來吧！" },
-     { level:3 , mission: this.resetHandler , name : "消失吧！" },
-     { level:4 , mission: this.switchPicHandler , name : "變形吧！" },
-     { level:5 , mission: this.bombHandler , name : "點爆吧！" }
-   ],
   //  換圖片的寫法想再漂亮一點 
    switchPicSrc : "粽子",
   }
 
-  // setState 的使用-同步 or 非同步？、updater
+  // setState 的使用-同步 or 非同步？、updater PreState的應用
   incrementHandler = () => { 
     if( this.state.counter.count < 9 )
     { 
@@ -50,14 +42,24 @@ class App extends React.Component {
     this.state.switchPicSrc === "粽子" ?  this.setState( { switchPicSrc: <img src = "http://p6.qhimg.com/dr/250__/t01e8735903540fce6b.png"  alt="看不到就算了" height = "80" /> } ) : this.setState( { switchPicSrc: "粽子" } ); }
 
   render() {
+
+   
+   const stages=[
+    { stage:1 , mission: this.incrementHandler , name: "去吧" },
+    { stage:2 , mission: this.decrementHandler , name : "回來吧！" },
+    { stage:3 , mission: this.resetHandler , name : "消失吧！" },
+    { stage:4 , mission: this.switchPicHandler , name : "變形吧！" },
+    { stage:5 , mission: this.incrementHandler , name : "點爆吧！" ,msg:`還有 ${10 -this.state.counter.count} 次` }
+    ];
+    
+    let riceballTemplate = stages.map((Stage)=>{
+      return <MyButton stage = { Stage.stage } mission = { Stage.mission } name = { Stage.name } theFlag = { this.state.counter.bomb }>{Stage.msg}</MyButton>
+    });
     return (
       <div>
         <h1>粽子節，數粽子 - { this.state.switchPicSrc }:{ this.state.counter.count }</h1>
-        <MyButton stage = { this.state.stage[0].level } mission = {  this.incrementHandler } name = { this.state.stage[0].name }  theFlag = { this.state.counter.bomb }/>
-        <MyButton stage = { this.state.stage[1].level } mission = {  this.decrementHandler } name = { this.state.stage[1].name }/>
-        <MyButton stage = { this.state.stage[2].level } mission = {  this.resetHandler } name = { this.state.stage[2].name }/>
-        <MyButton stage = { this.state.stage[3].level } mission = {  this.switchPicHandler } name = { this.state.stage[3].name }/>
-        <MyButton stage = { this.state.stage[4].level } mission = {  this.incrementHandler } name = { this.state.stage[4].name } theFlag = { this.state.counter.bomb }> 還有{ 10 - this.state.counter.count }次 </MyButton>
+        {/* 用map function不知道這樣會不會影響到效能，會不會只要有任一child component 改變，就重新跑map function 然後render 整個riceballTemplate 不管其他child component沒有發生狀態改變 */}
+        { riceballTemplate }
       </div>
     )
   }
